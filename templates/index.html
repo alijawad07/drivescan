@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DriveScan</title>
+    <link rel="icon" href="static/favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #CF9591 0%, #f4f4f4 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.75);
+            width: 90%;
+            max-width: 800px;
+        }
+
+        h1 {
+            color: #171A27;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select,
+        input[type="file"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        input[type="submit"] {
+            background-color: #171A27;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #53B2A4;
+            transform: translateY(-2px);
+        }
+
+        img.logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 250px;
+        }
+    </style>
+
+    <script>
+        function displayInputField() {
+            var inputType = document.getElementById('inputType').value;
+            if (inputType === 'rtsp') {
+                document.getElementById('rtspUrl').style.display = 'block';
+                document.getElementById('fileUpload').style.display = 'none';
+            } else {
+                document.getElementById('rtspUrl').style.display = 'none';
+                document.getElementById('fileUpload').style.display = 'block';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="form-container">
+        <a href="{{ url_for('reset_and_home') }}" id="logo"><img src="static/logo.png" alt="Logo" class="logo"></a>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label>Choose Input Type:</label>
+            <select id="inputType" name="inputType" onchange="displayInputField()">
+                <option value="image">Image</option>
+                <option value="directory">Directory (zip)</option>
+                <option value="video">Video</option>
+                <option value="rtsp">RTSP Stream</option>
+            </select>
+
+            <label>Choose OCR Method:</label>
+            <select name="ocrMethod">
+                <option value="1">EasyOCR</option>
+                <option value="2">OpenALPR</option>
+                <option value="3">PaddleOCR</option>
+                <option value="4">Pytesseract</option>
+            </select>
+
+            <div id="fileUpload">
+                <label>Upload File/Directory:</label>
+                <input type="file" name="file">
+            </div>
+
+            <div id="rtspUrl" style="display: none;">
+                <label>Enter RTSP URL:</label>
+                <input type="text" name="rtspUrl">
+            </div>
+
+            <input type="submit" value="Process">
+        </form>
+    </div>
+</body>
+
+</html>
