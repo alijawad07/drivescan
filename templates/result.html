@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="static/favicon.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #CF9591 0%, #f4f4f4 100%);
+            margin: 0;
+            padding: 20px 50px;
+            align-items: flex-start; /* Change from center to flex-start */
+        }
+
+
+        h2,
+        h3 {
+            color: #171A27;
+            border-bottom: 2px solid #555;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .video-card, .vehicle-details {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0px 10px 25px -10px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #171A27;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        a:hover {
+            background-color: #53B2A4;
+            transform: translateY(-2px);
+        }
+
+        img.logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 250px;
+        }
+        
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .left-side {
+            flex: 1;
+            max-width: 60%;
+            display: flex;
+            flex-direction: column;
+            margin-right: 20px;
+        }
+
+        .sliders {
+            margin-bottom: 20px;
+        }
+
+        .video-container {
+            flex: 1;
+        }
+
+        .right-side {
+            flex: 1;
+            max-width: 40%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vehicle-details {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-y: auto;
+        }
+
+        .ocr-choice-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: left;
+            margin-bottom: 20px;
+        }
+
+        .ocr-choice-label {
+            margin: 0 15px;
+        }
+
+        .video-and-counts {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        .count-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .count-box {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            margin-left: 10px;
+            margin-right: 10px;
+            text-align: center;
+        }
+
+        .count-box:first-child {
+            margin-left: 0;
+        }
+
+        .count-box:last-child {
+            margin-right: 0;
+        }
+
+        .charts-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .charts-container canvas {
+            flex: 1;
+            max-width: 50%;
+            max-height: 300px; /* New property to limit height */
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            max-width: 50%;
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .left-side, .right-side {
+                max-width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .charts-container canvas {
+                margin-bottom: 10px;
+            }
+        }
+
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* This ensures the container takes up the full viewport height */
+            position: fixed; /* Makes the container stay fixed */
+            top: 0;
+            left: 0;
+            width: 100%;
+            pointer-events: none; /* Makes sure the div doesn't block other elements */
+        }
+
+        .center-container a {
+            pointer-events: all; /* Makes sure the link is clickable */
+        }
+
+        .link-container {
+            text-align: center;
+            margin-top: 20px; /* You can adjust this value based on your preference */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f7f7f7;
+            border-bottom: 2px solid #eee;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        td {
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <!-- <a href="{{ url_for('reset_and_home') }}" id="logo"><img src="static/logo.png" alt="Logo" class="logo"></a> -->
+    <div class="main-content">
+        <!-- Sliders and video feed on the left -->
+        <div class="left-side">
+            <!-- Sliders -->
+            <h4>Change Confidence Threshold:</h4>
+            <div class="sliders">
+                <label for="ocrConf">OCR Confidence:</label>
+                <input type="range" id="ocrConf" name="ocrConf" min="0" max="1" step="0.01" value="{{ ocr_conf }}" oninput="sliderChanged()">
+                <span id="ocrConfValue">0.5</span>
+    
+                <label for="detConf">Detection Confidence:</label>
+                <input type="range" id="detConf" name="detConf" min="0" max="1" step="0.01" value="0.5" oninput="sliderChanged()">
+                <span id="detConfValue">0.5</span>
+            </div>
+
+            <h4>Change OCR Engine:</h4>
+            <div class="ocr-choice-container">
+                <label class="ocr-choice-label"><input type="radio" name="ocr_choice" value="1" {% if ocr_choice == "1" %}checked{% endif %}> EasyOCR</label>
+                <label class="ocr-choice-label"><input type="radio" name="ocr_choice" value="2" {% if ocr_choice == "2" %}checked{% endif %}> OpenALPR</label>
+                <label class="ocr-choice-label"><input type="radio" name="ocr_choice" value="3" {% if ocr_choice == "3" %}checked{% endif %}> PaddleOCR</label>
+                <label class="ocr-choice-label"><input type="radio" name="ocr_choice" value="4" {% if ocr_choice == "4" %}checked{% endif %}> Pytesseract</label>
+            </div>
+
+            
+            <!-- Inside the .left-side div -->
+            <div class="video-and-counts">
+                
+                <!-- Counts section -->
+                <div class="count-container">
+                    <div class="count-box" id="totalDetectedBox">
+                        <h3>Total Detected</h3>
+                        <span id="totalDetected">0</span>
+                    </div>
+                    
+                    <!-- These boxes will only be shown for RTSP streams -->
+                    <div class="count-box" id="inParkingBox" style="{{ 'display: none;' if input_type != 'rtsp' else '' }}">
+                        <h3>Parking</h3>
+                        <span id="inParking">0</span>
+                    </div>
+                    
+                    <div class="count-box" id="inRoadwayBox" style="{{ 'display: none;' if input_type != 'rtsp' else '' }}">
+                        <h3>Road/Way</h3>
+                        <span id="inRoadway">0</span>
+                    </div>
+                    
+                    <!-- These boxes will only be shown for non-RTSP streams -->
+                    <div class="count-box" id="successfulOCRBox">
+                        <h3>Successful OCR</h3>
+                        <span id="successfulOCR">0</span>
+                    </div>
+                    
+                    <div class="count-box" id="unsuccessfulOCRBox">
+                        <h3>Unsuccessful OCR</h3>
+                        <span id="unsuccessfulOCR">0</span>
+                    </div>
+                </div>
+
+                <!-- Video feed -->
+                <div class="video-container">
+                    <div class="video-card">
+                        <img src="{{ url_for('video_feed') }}" />
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+    
+        <!-- Detected details on the right -->
+        <div class="right-side">
+            <div class="vehicle-details">
+                <table id="liveData">
+                    <thead>
+                        <tr>
+                            <th>Track ID</th>
+                            <th>License Plate</th> <!-- Add this -->
+                            <th>OCR Reading</th>
+                            <th>Timestamp</th>
+                            <th>Confidence</th>
+                            <th>OCR_Engine</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    <div class="charts-container">
+        <div class="chart-wrapper">
+            <canvas id="countsChart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="ocrPieChart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="locationPieChart"></canvas>
+        </div>
+    </div>
+    <div class="link-container">
+        <a onclick="clearTable(); location.href='{{ url_for('reset_and_home') }}'">Back to Home Page</a>
+    </div>
+    
+
+    
+
+<script>
+
+    const barChartCtx = document.getElementById('countsChart').getContext('2d');
+    const ocrPieChartCtx = document.getElementById('ocrPieChart').getContext('2d');
+    const locationPieChartCtx = document.getElementById('locationPieChart').getContext('2d');
+
+    const barChartData = {
+        labels: ['Total Detected', 'Parking', 'Roadway', 'Successful OCR', 'Unsuccessful OCR'],
+        datasets: [{
+            label: 'Total Detected Vehicles',
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: ['#2A6863', '#3B4560', '#FFDAB9', '#B0A8A1', '#9E6060']
+        }]
+    };
+
+    const ocrPieData = {
+        labels: ['Successful OCR', 'Unsuccessful OCR'],
+        datasets: [{
+            data: [0, 0],
+            backgroundColor: ['#53B2A4', '#CF9591']
+        }]
+    };
+
+    const locationPieData = {
+        labels: ['Parking', 'Roadway'],
+        datasets: [{
+            data: [0, 0],
+            backgroundColor: ['#171A27', '#53B2A4']
+        }]
+    };
+
+    const barChartConfig = {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return data.labels[tooltipItem[0].index];
+                    },
+                    label: function(tooltipItem, data) {
+                        return data.datasets[tooltipItem.datasetIndex].label[tooltipItem.index] + ": " + 
+                            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                    }
+                }
+            },
+            plugins: {
+                afterDraw: function(chart) {
+                    var ctx = chart.ctx;
+
+                    // Set the font, size, and style
+                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillStyle = '#333'; // or whatever color you want the text to be
+                    
+                    // Get the data from the chart
+                    var datasets = chart.data.datasets;
+
+                    // Loop through all the bars in the dataset
+                    chart.getDatasetMeta(0).data.forEach(function(bar, index) {
+                        // Get the data for this bar
+                        var data = datasets[0].data[index];
+                        // Draw the data value above the bar
+                        ctx.fillText(chart.data.labels[index], bar._model.x, bar._model.y - 5);
+                    });
+                }
+            }
+        }
+    };
+
+
+    const ocrPieConfig = {
+        type: 'pie',
+        data: ocrPieData,
+    };
+
+    const locationPieConfig = {
+        type: 'pie',
+        data: locationPieData,
+    };
+
+    const barChart = new Chart(barChartCtx, barChartConfig);
+    const ocrPieChart = new Chart(ocrPieChartCtx, ocrPieConfig);
+    const locationPieChart = new Chart(locationPieChartCtx, locationPieConfig);
+
+    function updateCharts() {
+        fetch('/get_counts')
+            .then(response => response.json())
+            .then(data => {
+                // Update bar chart
+                barChart.data.datasets[0].data = [
+                    data.total_detected,
+                    data.count_in_parking,
+                    data.count_in_roadway,
+                    data.successful_ocr,
+                    data.unsuccessful_ocr
+                ];
+                barChart.update();
+
+                // Update OCR pie chart
+                ocrPieChart.data.datasets[0].data = [data.successful_ocr, data.unsuccessful_ocr];
+                ocrPieChart.update();
+
+                // Update location pie chart
+                locationPieChart.data.datasets[0].data = [data.count_in_parking, data.count_in_roadway];
+                locationPieChart.update();
+            });
+    }
+
+    setInterval(updateCharts, 1000);
+
+    function clearTable() {
+        var table = document.getElementById("liveData"); // Replace 'yourTableId' with the actual ID of your table
+        while(table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+    }
+
+    //const baseUrl = document.body.getAttribute("data-baseurl");
+    window.onload = function() {
+        document.getElementById("ocrConfValue").textContent = document.getElementById("ocrConf").value;
+    }
+
+    document.querySelectorAll('input[name="ocr_choice"]').forEach((radio) => {
+        radio.addEventListener('change', function() {
+            const newChoice = this.value;
+
+            // Send new choice to Flask backend
+            fetch('/change_ocr', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ newChoice: newChoice }),
+            });
+        });
+    });
+
+
+    function sliderChanged() {
+        const ocrConfValue = document.getElementById("ocrConf").value;
+        const detConfValue = document.getElementById("detConf").value;
+
+        // Update displayed value
+        document.getElementById("ocrConfValue").textContent = ocrConfValue;
+        document.getElementById("detConfValue").textContent = detConfValue;
+        
+        console.log("sliderChanged function triggered");
+        
+        // Send POST request to update confidence values on server
+        fetch('/update_confidences', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ocrConf: ocrConfValue,
+                detConf: detConfValue
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (!data.success) {
+                    // Handle failure
+                    alert("Failed to update confidences!");
+                }
+            });
+    }
+
+    function updateLiveData() {
+        fetch('/get_live_data')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector("#liveData tbody");
+            tableBody.innerHTML = "";
+            for (let id in data) {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${data[id].track_id}</td>
+                    <td><img src="${data[id].plate_image_url}" alt="Plate Image" width="100"></td> <!-- Modified this line -->
+                    <td>${data[id].ocr_reading}</td>
+                    <td>${data[id].time_stamp}</td>
+                    <td>${data[id].confidence}</td>
+                    <td>${data[id].ocr_engine}</td>
+                `;
+                tableBody.appendChild(row);
+            }
+        });
+    }
+
+    setInterval(updateLiveData, 1000);  // Update every second
+
+    function updateCounts() {
+        fetch('/get_counts')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("totalDetected").textContent = data.total_detected;
+                
+                if (data.count_in_parking !== undefined && data.count_in_roadway !== undefined) {
+                    document.getElementById("inParking").textContent = data.count_in_parking;
+                    document.getElementById("inRoadway").textContent = data.count_in_roadway;
+                }
+
+                if (data.successful_ocr !== undefined && data.unsuccessful_ocr !== undefined) {
+                    document.getElementById("successfulOCR").textContent = data.successful_ocr;
+                    document.getElementById("unsuccessfulOCR").textContent = data.unsuccessful_ocr;
+                }
+            });
+    }
+
+    // Update counts every second (or adjust the interval as needed)
+    setInterval(updateCounts, 1000);
+
+    let liveDataInterval = setInterval(updateLiveData, 1000);
+    let countsInterval = setInterval(updateCounts, 1000);
+
+    function goBackToMainPage() {
+        // Clear the data in the right-side div
+        document.querySelector("#liveData tbody").innerHTML = "";
+
+        // Clear the counts
+        document.getElementById("totalDetected").textContent = "0";
+        document.getElementById("inParking").textContent = "0";
+        document.getElementById("inRoadway").textContent = "0";
+        document.getElementById("successfulOCR").textContent = "0";
+        document.getElementById("unsuccessfulOCR").textContent = "0";
+
+        // Clear the intervals
+        clearInterval(liveDataInterval);
+        clearInterval(countsInterval);
+
+    }
+</script>
+
+</body>
+</html>
