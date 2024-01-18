@@ -1,0 +1,161 @@
+absl-py==1.4.0
+anyio==3.7.1
+appdirs==1.4.4
+astor==0.8.1
+astunparse==1.6.3
+attrdict==2.0.1
+Babel==2.14.0
+bce-python-sdk==0.8.98
+beautifulsoup4==4.12.2
+blinker==1.6.2
+brotlipy==0.7.0
+cachetools==5.3.1
+certifi==2022.12.7
+cffi @ file:///croot/cffi_1670423208954/work
+chardet==4.0.0
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+click==8.1.6
+cmake==3.26.3
+colorama==0.4.6
+contourpy==1.0.7
+cryptography @ file:///croot/cryptography_1689373676338/work
+cssselect==1.2.0
+cssutils==2.9.0
+cycler==0.10.0
+Cython==3.0.0
+decorator==5.1.1
+distlib==0.3.7
+docker-pycreds==0.4.0
+easyocr==1.7.1
+et-xmlfile==1.1.0
+exceptiongroup==1.1.2
+filelock==3.13.1
+fire==0.5.0
+Flask==2.3.2
+flask-babel==4.0.0
+flatbuffers==23.5.26
+fonttools==4.39.4
+future==0.18.3
+gast==0.4.0
+gitdb==4.0.10
+GitPython==3.1.32
+gmpy2 @ file:///tmp/build/80754af9/gmpy2_1645455532332/work
+google-auth==2.19.0
+google-auth-oauthlib==1.0.0
+google-pasta==0.2.0
+grpcio==1.54.2
+h11==0.14.0
+h5py==3.9.0
+httpcore==1.0.2
+httpx==0.26.0
+idna==2.10
+ImageHash==4.3.1
+imageio==2.33.1
+imgaug==0.4.0
+importlib-metadata==7.0.1
+importlib-resources==6.1.1
+itsdangerous==2.1.2
+Jinja2 @ file:///croot/jinja2_1666908132255/work
+joblib==1.2.0
+keras==2.13.1
+kiwisolver==1.4.5
+lapx==0.5.4
+lazy_loader==0.3
+libclang==16.0.6
+lit==16.0.5
+lmdb==1.4.1
+lxml==4.9.3
+MarkupSafe @ file:///opt/conda/conda-bld/markupsafe_1654597864307/work
+matplotlib==3.7.4
+mkl-fft==1.3.6
+mkl-random @ file:///work/mkl/mkl_random_1682950433854/work
+mkl-service==2.4.0
+mpmath @ file:///croot/mpmath_1690848262763/work
+networkx @ file:///croot/networkx_1690561992265/work
+numpy @ file:///work/mkl/numpy_and_numpy_base_1682953417311/work
+nvidia-cudnn-cu11==8.5.0.96
+onnx-graphsurgeon==0.3.27
+onnx2tf==1.16.9
+onnxsim==0.4.33
+opencv-contrib-python==4.6.0.66
+opencv-python==4.6.0.66
+opencv-python-headless==4.8.0.76
+openpyxl==3.1.2
+opt-einsum==3.3.0
+packaging==23.2
+paddle-bfloat==0.1.7
+paddleocr==2.7.0.3
+paddlepaddle==2.5.1
+paddlepaddle-gpu==2.5.1
+pandas==2.0.1
+pathtools==0.1.2
+pbr==6.0.0
+pdf2docx==0.5.6
+Pillow==10.1.0
+platformdirs==4.0.0
+plotly==5.16.1
+Polygon3==3.0.9.1
+premailer==3.10.0
+protobuf==3.20.3
+psutil==5.9.7
+py-cpuinfo==9.0.0
+pybind11==2.11.1
+pyclipper==1.3.0.post5
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pycryptodome==3.19.0
+Pygments==2.16.1
+PyMuPDF==1.20.2
+pyOpenSSL @ file:///croot/pyopenssl_1690223430423/work
+pyparsing==2.4.7
+PySocks @ file:///tmp/build/80754af9/pysocks_1605305779399/work
+pytesseract==0.3.10
+python-bidi==0.4.2
+python-dateutil==2.8.2
+python-docx==1.1.0
+pytz==2023.3.post1
+PyWavelets==1.4.1
+PyYAML==6.0.1
+rapidfuzz==3.2.0
+rarfile==4.1
+requests @ file:///croot/requests_1690400202158/work
+rich==13.5.2
+scikit-image==0.21.0
+scikit-learn==1.2.2
+scipy==1.10.1
+setproctitle==1.3.2
+shapely==2.0.1
+six==1.16.0
+smmap==5.0.0
+sng4onnx==1.0.1
+sniffio==1.3.0
+sounddevice==0.4.6
+soupsieve==2.5
+stevedore==5.1.0
+supervision==0.11.1
+sympy @ file:///croot/sympy_1668202399572/work
+tenacity==8.2.3
+tensorboard==2.13.0
+tensorboard-data-server==0.7.0
+tensorflow-cpu==2.13.0
+tensorflow-estimator==2.13.0
+tensorflow-io-gcs-filesystem==0.33.0
+termcolor==2.3.0
+tflite-support==0.4.3
+tifffile==2023.7.10
+torch==2.0.0
+torchaudio==2.0.0
+torchvision==0.15.0
+tqdm==4.65.0
+triton==2.0.0
+typing_extensions==4.5.0
+tzdata==2023.3
+ultralytics==8.0.173
+urllib3 @ file:///croot/urllib3_1686163155763/work
+virtualenv==20.25.0
+virtualenv-clone==0.5.7
+virtualenvwrapper==4.8.4
+visualdl==2.5.3
+wandb==0.15.8
+Werkzeug==2.3.4
+wrapt==1.15.0
+zipp==3.17.0
